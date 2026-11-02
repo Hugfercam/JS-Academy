@@ -1,0 +1,16 @@
+# La entrada y el Service Worker deben comprobar las nuevas versiones.
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/sw.js
+  Cache-Control: no-cache
+
+/manifest.webmanifest
+  Cache-Control: no-cache
+
+# Vite incluye el hash del contenido en estos nombres de archivo.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

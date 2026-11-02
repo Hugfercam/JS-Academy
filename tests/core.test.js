@@ -1,0 +1,7 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { topics, questions, challenges } from '../src/content.js';
+import { KEY, load, save, empty } from '../src/store.js';
+test('el banco tiene IDs únicos y preguntas corregibles',()=>{const ids=[...questions,...challenges].map(x=>x.id);assert.equal(new Set(ids).size,ids.length);assert.equal(questions.length,60);for(const q of questions){assert.ok(topics.some(t=>t.id===q.topicId));assert.equal(q.options.length,4);assert.equal(new Set(q.options).size,4);assert.ok(q.correct>=0&&q.correct<4);assert.ok(q.explanation&&q.sourceSection&&q.sourcePages);}assert.equal(challenges.length,15);for(const c of challenges){assert.match(c.entrypoint,/^[a-zA-Z_$][\w$]*$/);assert.ok(c.cases.length>=2);assert.ok(c.sourceSection&&c.sourcePages);assert.doesNotThrow(()=>new Function(c.starter));}});
+test('recupera almacenamiento bloqueado o corrupto',()=>{assert.deepEqual(load(null),empty());assert.deepEqual(load({getItem(){return '{roto';}}),empty());assert.deepEqual(load({getItem(){return '{"version":1,"answers":[]}';}}),empty());assert.equal(save(null,empty()),false);});
+test('conserva progreso y borradores tras recargar',()=>{const map=new Map();const storage={getItem:k=>map.get(k),setItem:(k,v)=>map.set(k,v)};const state=empty();state.coding.iva={draft:'function calcularPrecioIVA(p){return p*1.21}',attempts:2};assert.equal(save(storage,state),true);assert.ok(map.has(KEY));assert.deepEqual(load(storage),state);});

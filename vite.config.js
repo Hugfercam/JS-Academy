@@ -1,0 +1,3 @@
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+export default defineConfig({ plugins: [VitePWA({ registerType: 'prompt', includeAssets: ['icon.svg'], manifest: { id: '/', start_url: '/', scope: '/', name: 'JS Academy', short_name: 'JS Academy', description: 'Practica JavaScript a tu ritmo', theme_color: '#e7efe8', background_color: '#faf9f6', display: 'standalone', lang: 'es', icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }] }, workbox: { globPatterns: ['**/*.{js,css,html,svg,png,woff2}'] } })] });
